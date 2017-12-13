@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: ma.hiddenfounders.lns.dao.mongo.test.SuiteTests
--------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.244 sec - in ma.hiddenfounders.lns.dao.mongo.test.SuiteTests
