@@ -1,0 +1,9 @@
+2017-12-13 23:16:55.153  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : constructor
+2017-12-13 23:18:11.236  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : constructor
+2017-12-13 23:19:03.540  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : constructor
+2017-12-13 23:19:04.801  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : constructor
+2017-12-13 23:19:04.900  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : number of nearby shops:49
+2017-12-13 23:19:05.092  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : constructor
+2017-12-13 23:19:05.102  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : search shops with id:5a0c6711fb3aac66aafe26c4
+2017-12-13 23:19:05.262  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : constructor
+2017-12-13 23:19:05.274  INFO BrokenHeartsMBP.Home --- [           main] m.h.l.d.m.ShopsRepositoryImpl            : search shops named:Gushkool
