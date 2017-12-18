@@ -17,12 +17,54 @@
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-web</artifactId>
+		<exclusions>
+    		<exclusion>
+      			<groupId>org.springframework.boot</groupId>
+     			<artifactId>spring-boot-starter-logging</artifactId>
+   			 </exclusion>
+  		</exclusions>
 	</dependency>
+	
+	<!--  <dependency>
+		<groupId>org.springframework.session</groupId>
+		<artifactId>spring-session-data-redis</artifactId>
+	</dependency>-->
+
+	
+	<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<!-- Provided -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+    <groupId>org.webjars</groupId>
+    <artifactId>vue</artifactId>
+    <version>0.11.0</version>
+</dependency>
 	
 	<dependency>
        <groupId>org.mongodb</groupId>
        <artifactId>mongo-java-driver</artifactId>
 	</dependency>
+	
+	
 	
 	<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,6 +79,7 @@
 	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
+			
 	</dependency>
 	
 	<dependency>
@@ -67,7 +110,6 @@
         		<artifactId>maven-surefire-plugin</artifactId>  
         		<configuration>
           			<includes>
-        
             			<include>**/SuiteTests.java</include>
           			</includes>
         		</configuration>     

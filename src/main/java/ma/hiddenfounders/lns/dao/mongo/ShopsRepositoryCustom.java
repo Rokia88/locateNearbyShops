@@ -17,7 +17,5 @@ import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
 public interface ShopsRepositoryCustom {
 
 	public GeoResults<Shops> getNearbyShops(Point location);
-	public Shops findByName(String name);
-	public Shops findById(String id);
 	
 }

@@ -3,38 +3,27 @@ package ma.hiddenfounders.lns.dao.mongo.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ma.hiddenfounders.lns.dao.mongo.ShopsRepositoryCustom;
+import ma.hiddenfounders.lns.dao.mongo.ShopsRepository;
 import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
-import ma.hiddenfounders.lns.exceptions.DAOExceptions;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DAOTests {
 	
 	 
-	private ConfigurableApplicationContext context;
+	
 	
 	@Autowired
-	private ShopsRepositoryCustom shopsRepository;
+	private ShopsRepository shopsRepository;
 	 
-	 @Before
-	 public void testconnect() throws DAOExceptions
-	 {
-		 context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		 shopsRepository  =  context.getBean(ShopsRepositoryCustom.class);
-	 }
 	    
 	  
 
@@ -72,11 +61,7 @@ public class DAOTests {
     }
     
    
- 
-    @After
-    public void closeContext() throws Exception {
-      context.close();
-    }
+
  
 }
 
