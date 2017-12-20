@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ma.hiddenfounders.lns.dao.mongo.classes.Location;
+import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
+import ma.hiddenfounders.lns.exceptions.BusinessExceptions;
 import ma.hiddenfounders.lns.services.MainService;
 
 
@@ -26,12 +28,18 @@ public class MainController {
 	@Autowired
 	private MainService mainService;
 	
+	
 	@RequestMapping(value = "/remove", method=RequestMethod.GET)
 	public String removeShops(@RequestParam("id") String idShop) {
 		
 		logger.info("Removed shop Id:"+idShop, this);
-		//like shop
-		 mainService.remove(idShop);
+		//remove shop
+		 try {
+			mainService.remove(idShop);
+		} catch (BusinessExceptions e) {
+			
+			return "applicationErrors";
+		}
 	
 		return "preferredShops";
 	}
@@ -40,8 +48,14 @@ public class MainController {
 	public String dislikeShops(@RequestParam("id") String idShop) {
 		
 		logger.info("Disliked shop Id:"+idShop, this);
-		//like shop
-		 mainService.dislike(idShop);
+		
+		//dislike shop
+		 try {
+			mainService.dislike(idShop);
+		} catch (BusinessExceptions e) {
+			
+			return "applicationErrors";
+		}
 	
 		return "nearbyShops";
 	}
@@ -52,7 +66,12 @@ public class MainController {
 		
 		logger.info("Liked shop Id:"+idShop, this);
 		//like shop
-		 mainService.like(idShop);
+		 try {
+			mainService.like(idShop);
+		} catch (BusinessExceptions e) {
+			
+			return "applicationErrors";
+		}
 	
 		return "nearbyShops";
 	}
@@ -60,18 +79,18 @@ public class MainController {
 	@RequestMapping(value = "/", method=RequestMethod.GET)
 	public String getCurrentLocation(Map<String, Object> model) {
 		
-		logger.info("get Current position", this);
+		logger.info("Current location", this);
+		
+		logger.info("session timout:"+mainService.getSessionTimeout(), this);
 	
-        mainService.setSessionTimeout();
 		model.put("location", new Location());
 			
-	
 		return "index";
 	}
 	
 	
 	@RequestMapping( value="/nearbyShops", method=RequestMethod.POST)
-	public String displayNearByShops( @ModelAttribute("location") Location location,BindingResult result) {
+	public String displayNearByShops(@ModelAttribute("location") Location location,BindingResult result) {
 		
 		
 		//get current location  
@@ -83,7 +102,13 @@ public class MainController {
 		location.setY(33.95564);
 			
 		//get shops near location 
-		mainService.getNearbyShops(location);
+		try {
+			mainService.getNearbyShops(location);
+		} catch (ApplicationExceptions e) {
+			
+			return "applicationErrors";
+			
+		}
 		
 		return "nearbyShops";
 	}

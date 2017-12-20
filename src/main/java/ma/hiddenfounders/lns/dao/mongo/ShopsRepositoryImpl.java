@@ -2,22 +2,19 @@ package ma.hiddenfounders.lns.dao.mongo;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
-import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeospatialIndex;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.NearQuery;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
 
 import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
+import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
+import ma.hiddenfounders.lns.exceptions.DAOExceptions;
 
 /**
  * implementation of the interface {@link ShopsRepositoryCustom}
@@ -40,7 +37,7 @@ public class ShopsRepositoryImpl implements ShopsRepositoryCustom {
 	@Autowired
 	public ShopsRepositoryImpl(MongoTemplate mongoTemplate) {
 		
-		logger.info("constructor",this);
+		logger.info("constructor ShopsRepositoryImpl",this);
 		this.mongoTemplate = mongoTemplate;
 	}
 
@@ -49,48 +46,26 @@ public class ShopsRepositoryImpl implements ShopsRepositoryCustom {
 	 * returns the closest shops to location
 	 * @param location current position of the user
 	 * @return returns nearby shops ordered by their average distance from location
+	 * @throws DAOExceptions 
 	 */
-	public GeoResults<Shops> getNearbyShops(Point location){
+	public GeoResults<Shops> getNearbyShops(Point location) throws ApplicationExceptions{
 		
-		GeospatialIndex geospatialindex = new GeospatialIndex("location");
-		geospatialindex.typed(GeoSpatialIndexType.GEO_2DSPHERE);
-		mongoTemplate.indexOps("shops").ensureIndex(geospatialindex);
-		NearQuery query = NearQuery.near(location).maxDistance(new Distance(3, Metrics.KILOMETERS));
-		GeoResults<Shops> shops= mongoTemplate.geoNear(query, Shops.class, "shops");
-		//logger.info("number of nearby shops:"+shops.getContent().size());
-		logger.info("number of nearby shops:"+shops.getContent().size(), this);
+		GeoResults<Shops> shops = null;
+		
+		try {
+			GeospatialIndex geospatialindex = new GeospatialIndex("location");
+			geospatialindex.typed(GeoSpatialIndexType.GEO_2DSPHERE);
+			mongoTemplate.indexOps("shops").ensureIndex(geospatialindex);
+			NearQuery query = NearQuery.near(location).maxDistance(new Distance(3, Metrics.KILOMETERS));
+			shops= mongoTemplate.geoNear(query, Shops.class, "shops");
+			logger.info("number of nearby shops:"+shops.getContent().size(), this);
+		} catch (Exception e) {
+			throw new DAOExceptions("something goes wrong with getNearbyShops method");
+		}
 		return shops;
 	}
 	
-	/**
-	 * search in the database a shop whose name is name
-	 * @param name name of the required shop  
-	 * @return returns one shop of the specified name
-	 */
-	/*public Shops findByName(String name){
-
-		logger.info("search shops named:"+ name);
-		
-		Query query = new Query(Criteria.where("name").is(name));
-		Shops shop = mongoTemplate.findOne(query, Shops.class);		
-		return shop;
-	}
-
-
-	/**
-	 * search in the database a shop whose id is id
-	 * @param id id of of the required shop  
-	 * @return returns the shop identified by id
-	 */
-	/*public Shops findById(String id) {
-		
-		logger.info("search shops with id:"+ id);
-		
-		Query query = new Query(Criteria.where("_id").is(new ObjectId(id)));
-		Shops shop = mongoTemplate.findOne(query, Shops.class);		
-		return shop;
-	}*/
-
+	
 
 	
 	

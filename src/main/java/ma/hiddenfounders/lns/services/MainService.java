@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import ma.hiddenfounders.lns.dao.mongo.ShopsRepository;
 import ma.hiddenfounders.lns.dao.mongo.classes.Location;
 import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
+import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
+import ma.hiddenfounders.lns.exceptions.BusinessExceptions;
 
 @Component
 @Service
@@ -39,132 +41,139 @@ public class MainService {
 	@Autowired
 	public MainService(ShopsRepository shopsRepository) {
 		
+		logger.info("Constructor Main Service", this);
+		
 		this.shopsRepository = shopsRepository;
 		this.nearbyShops = new LinkedList<Shops>();
 		this.preferredShops = new LinkedList<Shops>();
 	}
 	
-	public void getNearbyShops(Location location) {
+	public void getNearbyShops(Location location) throws BusinessExceptions {
 		
 		logger.info("session timout:"+getSessionTimeout(), this);
 		
 		location.truncate();
-		
-		Point previouslocation = (Point) httpSession.getAttribute("currentlocation");
+	
 		
 		currentlocation = new Point(location.getX(),location.getY());
 		
-		if(currentlocation.equals(previouslocation))
+		logger.info("current position x:"+currentlocation.getX()+",y:"+currentlocation.getY(), this);
+		
+		
+		if(httpSession.getAttribute("nearbyShops") != null)
 		{
-			logger.info("current location is same as previous one", this);
+			logger.info("getNearbyShops: current session contains the nearbyShops attribute", this);
 			nearbyShops = (LinkedList<Shops>) httpSession.getAttribute("nearbyShops");
 		}
 		
-		else if (!(currentlocation.equals(previouslocation))|| previouslocation == null)
+		else if (httpSession.getAttribute("nearbyShops") == null)
 		{
-			logger.info("current location differs from previous one or session is new", this);
+			logger.info("getNearbyShops: current session does not contain the nearbyShops attribute", this);
 			
 			httpSession.setAttribute("currentlocation", currentlocation);
 			
-			Iterator<GeoResult<Shops>> it = shopsRepository.getNearbyShops(currentlocation).iterator();
+			try {
+				Iterator<GeoResult<Shops>> it = shopsRepository.getNearbyShops(currentlocation).iterator();
+				
+				nearbyShops.clear();
+				
+				while(it.hasNext()) {
+					nearbyShops.add(it.next().getContent());
+				}
 			
-			while(it.hasNext()) {
-				nearbyShops.add(it.next().getContent());
-			}
+				httpSession.setAttribute("nearbyShops", nearbyShops);
+				httpSession.setAttribute("totalshops", nearbyShops.size());
+				logger.info("number of nearby shops:"+nearbyShops.size(), this);
+				
+			} catch (ApplicationExceptions e) {
+				
+				throw new BusinessExceptions("something goes wrong with getNearbyShops method");
+			}	
 			
-			httpSession.setAttribute("nearbyShops", nearbyShops);
-			httpSession.setAttribute("totalshops", nearbyShops.size());
 		}
 		
 		
-		
-		logger.info("number of nearby shops:"+nearbyShops.size(), this);
-		logger.info("current poistion x:"+location.getX(), this);
-		logger.info("current poistion y:"+location.getY(), this);
-		
-		
 	}
 	
-	public void setSessionTimeout() {
-		httpSession.setMaxInactiveInterval(600);
-	}
 	
 	public int getSessionTimeout() {
+		
 		return httpSession.getMaxInactiveInterval();
 	}
 	
-	public void like(String idShop) {
+	public void like(String idShop) throws BusinessExceptions {
 		
-		logger.info("session timout:"+getSessionTimeout(), this);
 		
-		Shops shop = shopsRepository.findById(idShop);
-		
-		logger.info("Liked Shop name and id:"+shop.getId()+","+shop.getName(), this);
-		
-		preferredShops.add(shop);
-		
-		nearbyShops.remove(shop);
-		httpSession.removeAttribute("nearbyShops");
-		httpSession.removeAttribute("totalshops");
-		logger.info("new number of nearby shops:"+nearbyShops.size(), this);
-		logger.info("new number of preferred shops:"+preferredShops.size(), this);
-		
-		if(httpSession.getAttribute("preferredShops")!=null)
-		{
-			logger.info("current session already contains the preferredShops attribute ", this);
+		try {
 			
-			httpSession.removeAttribute("preferredShops");
-			httpSession.removeAttribute("totalPrefShops");
+			Shops shop = shopsRepository.findById(idShop);
+			
+			logger.info("Liked Shop name and id:"+shop.getId()+","+shop.getName(), this);
+			
+			preferredShops.add(shop);
+			
+			nearbyShops.remove(shop);
+			
+			logger.info("new number of nearby shops:"+nearbyShops.size(), this);
+			logger.info("new number of preferred shops:"+preferredShops.size(), this);
+			
+			httpSession.setAttribute("nearbyShops", nearbyShops);
+			httpSession.setAttribute("totalshops", nearbyShops.size());
+			httpSession.setAttribute("preferredShops", preferredShops);
+			httpSession.setAttribute("totalPrefShops", preferredShops.size());
+		} catch (ApplicationExceptions  e) {
+			
+			throw new BusinessExceptions("something goes wrong with like method");
 		}
-		httpSession.setAttribute("nearbyShops", nearbyShops);
-		httpSession.setAttribute("totalshops", nearbyShops.size());
-		httpSession.setAttribute("preferredShops", preferredShops);
-		httpSession.setAttribute("totalPrefShops", preferredShops.size());
 	}
 	
-	public void dislike(String idShop) {
+	public void dislike(String idShop) throws BusinessExceptions{
 		
-		logger.info("session timout:"+getSessionTimeout(), this);
-		
-		Shops shop = shopsRepository.findById(idShop);
-		
-		logger.info("Liked Shop name and id:"+shop.getId()+","+shop.getName(), this);
-		
-		nearbyShops.remove(shop);
-		
-		logger.info("new number of nearby shops:"+nearbyShops.size(), this);
+		try {
+			Shops shop = shopsRepository.findById(idShop);
 			
-		httpSession.removeAttribute("nearbyShops");
-		httpSession.removeAttribute("totalshops");
-		httpSession.setAttribute("nearbyShops", nearbyShops);
-		httpSession.setAttribute("totalshops", nearbyShops.size());
+			logger.info("Disliked Shop name and id:"+shop.getId()+","+shop.getName(), this);
+			
+			nearbyShops.remove(shop);
+			
+			logger.info("new number of nearby shops:"+nearbyShops.size(), this);
+				
+			httpSession.setAttribute("nearbyShops", nearbyShops);
+			httpSession.setAttribute("totalshops", nearbyShops.size());
+		} catch (ApplicationExceptions  e) {
+			
+			throw new BusinessExceptions("something goes wrong with dislike method");
+		}
 		
 	}
 	
-    public void remove(String idShop) {
+    public void remove(String idShop) throws BusinessExceptions {
     	
-    	logger.info("session timout:"+getSessionTimeout(), this);
 		
-    	Shops shop = shopsRepository.findById(idShop);
+    	try {
+    		Shops shop = shopsRepository.findById(idShop);
+    		
+    		logger.info("Removed Shop name and id:"+shop.getId()+","+shop.getName(), this);
+    		
+    		preferredShops.remove(shop);
+    		
+    		nearbyShops.add(shop);
+    		
+    		logger.info("new number of nearby shops:"+nearbyShops.size(), this);
+    		logger.info("new number of preferred shops:"+preferredShops.size(), this);
+    	
+    		
+    		httpSession.setAttribute("nearbyShops", nearbyShops);
+    		httpSession.setAttribute("totalshops", nearbyShops.size());
+    		httpSession.setAttribute("preferredShops", preferredShops);
+    		httpSession.setAttribute("totalPrefShops", preferredShops.size());
+    		
+		} catch (ApplicationExceptions  e) {
+			
+			throw new BusinessExceptions("something goes wrong with remove method");
+		}
 		
-		logger.info("Removed Shop name and id:"+shop.getId()+","+shop.getName(), this);
 		
-		preferredShops.remove(shop);
-		
-		nearbyShops.add(shop);
-		
-		logger.info("new number of nearby shops:"+nearbyShops.size(), this);
-		logger.info("new number of preferred shops:"+preferredShops.size(), this);
-		
-		httpSession.removeAttribute("nearbyShops");
-		httpSession.removeAttribute("totalshops");
-		httpSession.removeAttribute("preferredShops");
-		httpSession.removeAttribute("totalPrefShops");
-		
-		httpSession.setAttribute("nearbyShops", nearbyShops);
-		httpSession.setAttribute("totalshops", nearbyShops.size());
-		httpSession.setAttribute("preferredShops", preferredShops);
-		httpSession.setAttribute("totalPrefShops", preferredShops.size());
 		
 	}
 
@@ -172,10 +181,11 @@ public class MainService {
 		
 		if(httpSession.getAttribute("nearbyShops")==null)
 		{
-			logger.info("current session already contains the preferredShops attribute ", this);
+			
+			logger.info("current session does not contain the nearbyShops attribute ", this);
 			
 			httpSession.setAttribute("nearbyShops", nearbyShops);
-			httpSession.setAttribute("otalshops", nearbyShops.size());
+			httpSession.setAttribute("totalshops", nearbyShops.size());
 		}
 	}
 
@@ -183,7 +193,9 @@ public class MainService {
 		
 		if(httpSession.getAttribute("preferredShops")==null)
 		{
-			logger.info("current session already contains the preferredShops attribute ", this);
+			preferredShops.clear();
+			
+			logger.info("current session does not contain the preferredShops attribute ", this);
 			
 			httpSession.setAttribute("preferredShops", preferredShops);
 			httpSession.setAttribute("totalPrefShops", preferredShops.size());

@@ -5,6 +5,7 @@ import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
 import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
+import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
 
 /**
  * Custom Repository of database queries  
@@ -16,6 +17,6 @@ import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
 @Component
 public interface ShopsRepositoryCustom {
 
-	public GeoResults<Shops> getNearbyShops(Point location);
+	public GeoResults<Shops> getNearbyShops(Point location) throws ApplicationExceptions;
 	
 }

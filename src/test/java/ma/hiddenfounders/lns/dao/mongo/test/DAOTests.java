@@ -13,12 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ma.hiddenfounders.lns.dao.mongo.ShopsRepository;
 import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
+import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DAOTests {
-	
-	 
 	
 	
 	@Autowired
@@ -39,7 +38,7 @@ public class DAOTests {
     
     
     @Test
-    public void testgetNearbyShops()
+    public void testgetNearbyShops() throws ApplicationExceptions
     {
    
 	Point location = new Point(-6.81134, 33.95564);
@@ -52,7 +51,7 @@ public class DAOTests {
     
     
     @Test
-    public void testfindById()
+    public void testfindById() throws ApplicationExceptions
     {
     
         Shops shopA = shopsRepository.findById("5a0c6711fb3aac66aafe26c4");
