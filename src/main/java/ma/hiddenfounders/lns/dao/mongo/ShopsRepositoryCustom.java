@@ -1,9 +1,9 @@
 package ma.hiddenfounders.lns.dao.mongo;
 
 import org.springframework.data.geo.GeoResults;
-import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
+import ma.hiddenfounders.lns.dao.mongo.classes.Location;
 import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
 import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
 
@@ -17,6 +17,6 @@ import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
 @Component
 public interface ShopsRepositoryCustom {
 
-	public GeoResults<Shops> getNearbyShops(Point location) throws ApplicationExceptions;
+	public GeoResults<Shops> getNearbyShops(Location location) throws ApplicationExceptions;
 	
 }

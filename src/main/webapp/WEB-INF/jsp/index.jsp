@@ -31,20 +31,17 @@
 		}
 		if (navigator.geolocation) {
 			  // geolocation is available
-				navigator.geolocation.getCurrentPosition(showPosition);
-				
-				
+				navigator.geolocation.getCurrentPosition(showPosition);				
 		} 
 		else {
 			  // geolocation is not supported
-				x.innerHTML = "Geolocation is not supported by this browser.";
-				
+				x.innerHTML = "Geolocation is not supported by this browser.";			
 	   }
 	}
 	
-  $(document).ready(function() {
+$(document).ready(function() {
 		currentPosition();
-	});
+});
 
 </script>
 

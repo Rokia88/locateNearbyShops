@@ -8,10 +8,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.geo.GeoResults;
-import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ma.hiddenfounders.lns.dao.mongo.ShopsRepository;
+import ma.hiddenfounders.lns.dao.mongo.classes.Location;
 import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
 import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
 
@@ -41,7 +41,9 @@ public class DAOTests {
     public void testgetNearbyShops() throws ApplicationExceptions
     {
    
-	Point location = new Point(-6.81134, 33.95564);
+	Location location = new Location();
+	location.setX(-6.81134);
+	location.setY(33.95564);
 	GeoResults<Shops> shops= shopsRepository.getNearbyShops(location);
 	assertEquals(49,shops.getContent().size());
 	Shops shopA = shops.getContent().get(0).getContent();

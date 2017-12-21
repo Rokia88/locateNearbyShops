@@ -28,7 +28,7 @@ public class ServicesTests {
 
 	
 	@Test
-    public void testgetNearbyShops() throws BusinessExceptions
+    public void testallservice() throws BusinessExceptions
     {
 		httpSession.setMaxInactiveInterval(7200);
 		

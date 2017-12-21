@@ -12,7 +12,7 @@
 </head>
 <body>
  
-  <div id="vue-shop"  class= "w3-container w3-center" >
+<div id="vue-shop"  class= "w3-container w3-center" >
   
   	<div class = "w3-section w3-right">
       	      <a href="#">Nearby Shops</a>
@@ -20,37 +20,28 @@
     </div>		
   
   
-  <div class="w3-row-padding w3-margin w3-center" style="width:80%">
-   
+    <div class="w3-row-padding w3-margin w3-center" style="width:80%"> 
    	<div v-for="item in filtered" :key="item.id" class="w3-third w3-center w3-margin-top" style="width:25%">
-   			<div class="w3-card" >
-   			
+   		<div class="w3-card" >  			
       		<div class = "w3-container w3-center">
-      			<h5>{{item.name}}</h5>
-         	
-      		
-      			<img v-bind:src=item.picture style="width:80%">
-      		
+      			<h5>{{item.name}}</h5>		
+      			<img v-bind:src=item.picture style="width:80%">	
       			  <!-- like dislike buttons  -->
       		 	<div class = "w3-section">
       	       		<button class="w3-button w3-green" @click="like(item.id)" style="height:20%" >Like</button>
   			   		<button class="w3-button w3-red" @click="dislike(item.id)" style="height:20%">Dislike</button>
       		 	</div>
-   		   </div>
-   		  
-   			</div>
-  	
+   		    </div>
+   		</div>
    </div> 
    </div>
    
    <div class="w3-section w3-right">
-   
    <button class="w3-btn w3-white w3-border w3-round-large" @click="paginate('previous')" :disabled="start <= 0" >Previous</button>
-   <button class="w3-btn w3-white w3-border w3-round-large" @click="paginate('next')" :disabled="limit >= total">Next</button>
-   
+   <button class="w3-btn w3-white w3-border w3-round-large" @click="paginate('next')" :disabled="limit >= total">Next</button>  
    </div>
    
-   </div>
+</div>
   
 </body>
 <script type="text/javascript">  
@@ -109,9 +100,4 @@ var vueItems = new Vue({
     
 });
 </script> 
-
-
-
-
-
 </html>

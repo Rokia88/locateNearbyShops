@@ -3,7 +3,6 @@ package ma.hiddenfounders.lns.dao.mongo.classes;
 import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -33,7 +32,7 @@ public class Shops implements Serializable{
 	private String picture;
 	
 	@GeoSpatialIndexed(type=GeoSpatialIndexType.GEO_2DSPHERE)
-	private Point location;
+	private Location location;
 	
 	/**
 	 * Constructor
@@ -44,7 +43,7 @@ public class Shops implements Serializable{
 	 * @param location shop's location
 	 * @param picture URL
 	 */
-	public Shops(String id, String name, String email, String city, String picture, Point location) {
+	public Shops(String id, String name, String email, String city, String picture, Location location) {
 
 		this.id = id;
 		this.name = name;
@@ -54,12 +53,6 @@ public class Shops implements Serializable{
 		this.picture = picture;
 	}
 	
-	
-
-	public Shops() {
-	
-	}
-
 
 	/**
 	 * getter method of id field
@@ -129,7 +122,7 @@ public class Shops implements Serializable{
 	 * getter method of location field
 	 * @return returns location
 	 */
-	public Point getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
@@ -137,18 +130,24 @@ public class Shops implements Serializable{
 	 * setter method of location field
 	 * @param location
 	 */
-	public void setLocation(Point location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 	
 	
-
+    /**
+     * getter method of picture field
+     * @return shop's url
+     */
 	public String getPicture() {
 		return picture;
 	}
 
 
-
+    /**
+     *  setter method of picture field
+     * @param picture shop's url
+     */
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}

@@ -6,6 +6,11 @@ import org.springframework.stereotype.Repository;
 import ma.hiddenfounders.lns.dao.mongo.classes.Shops;
 import ma.hiddenfounders.lns.exceptions.ApplicationExceptions;
 
+/**
+ * Repository of auto-configured database queries
+ * @author rokia
+ * @version 1.0
+ */
 @Repository
 public interface ShopsRepository extends MongoRepository<Shops, String>, ShopsRepositoryCustom{
 	

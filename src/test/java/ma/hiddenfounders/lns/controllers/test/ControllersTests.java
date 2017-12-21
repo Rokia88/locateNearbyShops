@@ -36,13 +36,11 @@ public class ControllersTests {
     public void returnindex() throws Exception {	
 		
     	this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
-                .andExpect(forwardedUrl("/WEB-INF/jsp/index.jsp"));
-                
-        
+                .andExpect(forwardedUrl("/WEB-INF/jsp/index.jsp"));               
     }
 	
     @Test
-    public void returnnearbyshops() throws BusinessExceptions, Exception {
+    public void returnnearbyshopspost() throws BusinessExceptions, Exception {
     	
     	Location mockedLocation = mock(Location.class);
     	doNothing().when(mainService).getNearbyShops(mockedLocation);
@@ -80,10 +78,9 @@ public class ControllersTests {
     
     
     @Test
-    public void mocklike() throws BusinessExceptions, Exception   {
+    public void testlike() throws BusinessExceptions, Exception   {
     	
-    	String mockedId = "1234";
-    	
+    	String mockedId = "1234";   	
     	doNothing().when(mainService).like(mockedId);
     	 this.mockMvc.perform(get("/like?id="+mockedId)).andDo(print()).andExpect(forwardedUrl("/WEB-INF/jsp/nearbyShops.jsp"))
     	 .andExpect(status().isOk());
@@ -91,10 +88,9 @@ public class ControllersTests {
     }
     
     @Test
-    public void mockdislike() throws BusinessExceptions, Exception   {
+    public void testdislike() throws BusinessExceptions, Exception   {
     	
-    	String mockedId = "1234";
-    	
+    	String mockedId = "1234";	
     	doNothing().when(mainService).dislike(mockedId);
     	 this.mockMvc.perform(get("/dislike?id="+mockedId)).andDo(print()).andExpect(forwardedUrl("/WEB-INF/jsp/nearbyShops.jsp"))
     	 .andExpect(status().isOk());
@@ -102,10 +98,9 @@ public class ControllersTests {
     }
     
     @Test
-    public void mockremove() throws BusinessExceptions, Exception   {
+    public void testremove() throws BusinessExceptions, Exception   {
     	
-    	String mockedId = "1234";
-    	
+    	String mockedId = "1234";  	
     	doNothing().when(mainService).remove(mockedId);
     	 this.mockMvc.perform(get("/remove?id="+mockedId)).andDo(print()).andExpect(forwardedUrl("/WEB-INF/jsp/preferredShops.jsp"))
     	 .andExpect(status().isOk());

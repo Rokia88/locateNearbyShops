@@ -3,6 +3,11 @@ package ma.hiddenfounders.lns.exceptions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Exceptions relates to business layer
+ * @author rokia
+ * @version 1.0
+ */
 public class BusinessExceptions extends ApplicationExceptions{
 
 	/**
