@@ -79,6 +79,7 @@ public class MainService {
 			
 			httpSession.setAttribute("currentlocation", currentlocation);
 			
+			
 			try {
 				Iterator<GeoResult<Shops>> it = shopsRepository.getNearbyShops(currentlocation).iterator();			
 				nearbyShops.clear();			
@@ -95,6 +96,11 @@ public class MainService {
 			}	
 			
 		}		
+	}
+	
+	public void setSessionTimeout() {
+		 
+		httpSession.setMaxInactiveInterval(7200);
 	}
 	
 	/**
@@ -117,6 +123,9 @@ public class MainService {
 			Shops shop = shopsRepository.findById(idShop);			
 			logger.info("Liked Shop name and id:"+shop.getId()+","+shop.getName(), this);
 			
+			//used to restore the shop when it is removed from preferred shops
+			int indexLikedShops = nearbyShops.indexOf(shop);
+			
 			preferredShops.add(shop);		
 			nearbyShops.remove(shop);			
 			logger.info("new number of nearby shops:"+nearbyShops.size(), this);
@@ -126,6 +135,7 @@ public class MainService {
 			httpSession.setAttribute("totalshops", nearbyShops.size());
 			httpSession.setAttribute("preferredShops", preferredShops);
 			httpSession.setAttribute("totalPrefShops", preferredShops.size());
+			httpSession.setAttribute(idShop, indexLikedShops);
 		} catch (ApplicationExceptions  e) {		
 			throw new BusinessExceptions("something goes wrong with like method");
 		}
@@ -163,8 +173,9 @@ public class MainService {
     		Shops shop = shopsRepository.findById(idShop); 		
     		logger.info("Removed Shop name and id:"+shop.getId()+","+shop.getName(), this);
     		
-    		preferredShops.remove(shop);    		
-    		nearbyShops.add(shop);		
+    		preferredShops.remove(shop);  		
+    		nearbyShops.add((Integer)(httpSession.getAttribute(shop.getId())), shop);
+    		
     		logger.info("new number of nearby shops:"+nearbyShops.size(), this);
     		logger.info("new number of preferred shops:"+preferredShops.size(), this);
     
