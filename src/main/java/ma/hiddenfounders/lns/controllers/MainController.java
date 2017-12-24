@@ -100,7 +100,11 @@ public class MainController {
 		
 		logger.info("Current location", this);
 		
-		logger.info("session timout:"+mainService.getSessionTimeout(), this);
+		logger.info("session timeout:"+mainService.getSessionTimeout(), this);
+		
+		mainService.setSessionTimeout();
+		
+		logger.info("modified session timeout:"+mainService.getSessionTimeout(), this);
 	
 		//we create the object location before passing it to the view model 
 		model.put("location", new Location());
