@@ -16,7 +16,7 @@
   
   	<div class = "w3-section w3-right">
       	      <a href="#">Nearby Shops</a>
-  		      <a href="https://localhost:8443/myPreferredShops">My preferred Shops</a>
+  		      <a href="https://localhost:8443/locateNearbyShops/myPreferredShops">My preferred Shops</a>
     </div>		
   
   
@@ -83,11 +83,11 @@ var vueItems = new Vue({
     			}
     		},
     		like: function (id){
-    			window.location.href = 'https://localhost:8443/like?id='+id;
+    			window.location.href = 'https://localhost:8443/locateNearbyShops/like?id='+id;
     			
     		},
     		dislike: function (id){
-    			window.location.href = 'https://localhost:8443/dislike?id='+id;
+    			window.location.href = 'https://localhost:8443/locateNearbyShops/dislike?id='+id;
     			
     		},
     	},

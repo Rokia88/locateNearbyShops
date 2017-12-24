@@ -15,7 +15,7 @@
   <div id="vue-shop"  class= "w3-container w3-center" >
   
   	<div class = "w3-section w3-right">
-      	      <a href="https://localhost:8443/displayShops">Nearby Shops</a>
+      	      <a href="https://localhost:8443/locateNearbyShops/displayShops">Nearby Shops</a>
   		      <a href="#">My preferred Shops</a>
     </div>		
   
@@ -83,7 +83,7 @@ var vueItems = new Vue({
     			}
     		},
     		remove: function (id){
-    			window.location.href = 'https://localhost:8443/remove?id='+id;
+    			window.location.href = 'https://localhost:8443/locateNearbyShops/remove?id='+id;
     			
     		},
     	},
