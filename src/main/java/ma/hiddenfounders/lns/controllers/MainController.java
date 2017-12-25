@@ -126,9 +126,9 @@ public class MainController {
 		logger.info("get Current position X:"+location.getX(), this);
 		logger.info("get Current position Y:"+location.getY(), this);
 		
-		//comment these lines in prod version
-		location.setX(-6.81134);
-		location.setY(33.95564);
+		//comment these lines in final version
+		//location.setX(-6.81134);
+		//location.setY(33.95564);
 			
 		//get shops near location 
 		try {			
@@ -141,7 +141,7 @@ public class MainController {
 	}
 	
 	/**
-	 * this method is called when the user click on the link "Nearby Shops"
+	 * this method is called when the user clicks on the link "Nearby Shops"
 	 * @return view page
 	 */
 	@RequestMapping( value="/displayShops", method=RequestMethod.GET)
@@ -155,7 +155,7 @@ public class MainController {
 	}
 	
 	/**
-	 * this method is called when the user click on the link get "My preferred Shops"
+	 * this method is called when the user clicks on the link get "My preferred Shops"
 	 * @return view page
 	 */
 	@RequestMapping(value = "/myPreferredShops", method = RequestMethod.GET)

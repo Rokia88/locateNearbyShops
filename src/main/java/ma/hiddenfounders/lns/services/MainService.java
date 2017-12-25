@@ -98,6 +98,9 @@ public class MainService {
 		}		
 	}
 	
+	/**
+	 * set session timout to 2H
+	 */
 	public void setSessionTimeout() {
 		 
 		httpSession.setMaxInactiveInterval(7200);
@@ -163,7 +166,7 @@ public class MainService {
 	}
 	
 	/**
-	 * add the removed shop from preferred shops and add it to nearby shops
+	 * return the shop removed from preferred shops to nearby shops
 	 * @param idShop
 	 * @throws BusinessExceptions
 	 */
@@ -189,8 +192,8 @@ public class MainService {
 	}
 
     /**
-     * get nearby shops from current session, when the user click on the link "Nearby Shops"
-     * if the attribute does not exist, add it to the current session
+     * when the user clicks on the link "Nearby Shops", get nearby shops from current session,
+     * add nearby shops to the current session if it does not contain it
      */
 	public void getNearbyShops_() {
 		
@@ -204,8 +207,8 @@ public class MainService {
 	}
 
 	/**
-	 *  get preferred shops from current session, when the user click on the link "My Preferred Shops"
-	 *  if the attribute does not exist, add it to the current session
+	 *  when the user clicks on the link "My Preferred Shops", get preferred shops from current session
+	 *  add preferred shops to the current session if it does not contain it
 	 */
 	public void getPreferredShops() {
 		

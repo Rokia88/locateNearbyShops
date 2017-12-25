@@ -33,14 +33,14 @@ public class ControllersTests {
 	private MainService mainService;
     
     @Test
-    public void returnindex() throws Exception {	
+    public void returnIndex() throws Exception {	
 		
     	this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
                 .andExpect(forwardedUrl("/WEB-INF/jsp/index.jsp"));               
     }
 	
     @Test
-    public void returnnearbyshopspost() throws BusinessExceptions, Exception {
+    public void returnNearbyShopsPost() throws BusinessExceptions, Exception {
     	
     	Location mockedLocation = mock(Location.class);
     	doNothing().when(mainService).getNearbyShops(mockedLocation);
@@ -50,7 +50,7 @@ public class ControllersTests {
     }
     
     @Test
-    public void returnpreferredshops() throws Exception  {
+    public void returnPreferredShops() throws Exception  {
     	
     	doNothing().when(mainService).getPreferredShops();
     	this.mockMvc.perform(get("/myPreferredShops")).andDo(print()).andExpect(status().isOk())
@@ -58,7 +58,7 @@ public class ControllersTests {
     }
     
     @Test
-    public void returnnearbyshopsget() throws Exception  {
+    public void returnNearbyShopsGet() throws Exception  {
     	
     	doNothing().when(mainService).getNearbyShops_();
     	this.mockMvc.perform(get("/displayShops")).andDo(print()).andExpect(status().isOk())
@@ -66,7 +66,7 @@ public class ControllersTests {
     }
     
     @Test
-    public void returnerrorpage() throws BusinessExceptions, Exception   {
+    public void returnErrorPage() throws BusinessExceptions, Exception   {
     	
     	String mockedId = "1234";
     	
@@ -78,7 +78,7 @@ public class ControllersTests {
     
     
     @Test
-    public void testlike() throws BusinessExceptions, Exception   {
+    public void testLike() throws BusinessExceptions, Exception   {
     	
     	String mockedId = "1234";   	
     	doNothing().when(mainService).like(mockedId);
@@ -88,7 +88,7 @@ public class ControllersTests {
     }
     
     @Test
-    public void testdislike() throws BusinessExceptions, Exception   {
+    public void testDislike() throws BusinessExceptions, Exception   {
     	
     	String mockedId = "1234";	
     	doNothing().when(mainService).dislike(mockedId);
@@ -98,7 +98,7 @@ public class ControllersTests {
     }
     
     @Test
-    public void testremove() throws BusinessExceptions, Exception   {
+    public void testRemove() throws BusinessExceptions, Exception   {
     	
     	String mockedId = "1234";  	
     	doNothing().when(mainService).remove(mockedId);

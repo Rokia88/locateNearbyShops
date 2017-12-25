@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Exceptions relates to business layer
+ * Exceptions related to business layer
  * @author rokia
  * @version 1.0
  */
