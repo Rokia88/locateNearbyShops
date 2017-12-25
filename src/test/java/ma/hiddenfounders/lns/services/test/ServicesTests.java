@@ -28,7 +28,7 @@ public class ServicesTests {
 
 	
 	@Test
-    public void testallservice() throws BusinessExceptions
+    public void testallservices() throws BusinessExceptions
     {
 		httpSession.setMaxInactiveInterval(7200);
 		
