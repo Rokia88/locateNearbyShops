@@ -1,5 +1,6 @@
 package ma.hiddenfounders.lns.services;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +40,8 @@ public class MainService {
 	
 	private List<Shops> preferredShops;
 	
+	private HashMap<String,Integer> orderedShops;
+	
 	/**
 	 * Constructor 
 	 * @param shopsRepository used to interface with DAO layer  
@@ -51,6 +54,7 @@ public class MainService {
 		this.shopsRepository = shopsRepository;
 		this.nearbyShops = new LinkedList<Shops>();
 		this.preferredShops = new LinkedList<Shops>();
+		this.orderedShops = new HashMap<>();
 	}
 	
 	/**
@@ -82,9 +86,14 @@ public class MainService {
 			
 			try {
 				Iterator<GeoResult<Shops>> it = shopsRepository.getNearbyShops(currentlocation).iterator();			
-				nearbyShops.clear();			
+				nearbyShops.clear();	
+				int index = 0;
 				while(it.hasNext()) {
-					nearbyShops.add(it.next().getContent());
+					Shops itShop = it.next().getContent();
+					//store the order of the shop in the map
+					nearbyShops.add(itShop);
+					orderedShops.put(itShop.getId(),index);
+					index++;
 				}		
 				//add the shops and their total number to the current session
 				httpSession.setAttribute("nearbyShops", nearbyShops);
@@ -125,10 +134,7 @@ public class MainService {
 		try {			
 			Shops shop = shopsRepository.findById(idShop);			
 			logger.info("Liked Shop name and id:"+shop.getId()+","+shop.getName(), this);
-			
-			//used to restore the shop when it is removed from preferred shops
-			int indexLikedShops = nearbyShops.indexOf(shop);
-			
+		
 			preferredShops.add(shop);		
 			nearbyShops.remove(shop);			
 			logger.info("new number of nearby shops:"+nearbyShops.size(), this);
@@ -138,7 +144,6 @@ public class MainService {
 			httpSession.setAttribute("totalshops", nearbyShops.size());
 			httpSession.setAttribute("preferredShops", preferredShops);
 			httpSession.setAttribute("totalPrefShops", preferredShops.size());
-			httpSession.setAttribute(idShop, indexLikedShops);
 		} catch (ApplicationExceptions  e) {		
 			throw new BusinessExceptions("something goes wrong with like method");
 		}
@@ -177,7 +182,7 @@ public class MainService {
     		logger.info("Removed Shop name and id:"+shop.getId()+","+shop.getName(), this);
     		
     		preferredShops.remove(shop);  		
-    		nearbyShops.add((Integer)(httpSession.getAttribute(shop.getId())), shop);
+    		nearbyShops.add(orderedShops.get(shop.getId()), shop);
     		
     		logger.info("new number of nearby shops:"+nearbyShops.size(), this);
     		logger.info("new number of preferred shops:"+preferredShops.size(), this);
