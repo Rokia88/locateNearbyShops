@@ -71,7 +71,7 @@ public class MainController {
 	}
 	
 	/**
-	 * method called when users click on dislike button
+	 * method called when users click on like button
 	 * @param idShop the shop identifier
 	 * @return view page or error page
 	 */
@@ -155,7 +155,7 @@ public class MainController {
 	}
 	
 	/**
-	 * this method is called when the user clicks on the link get "My preferred Shops"
+	 * this method is called when the user clicks on the link "My preferred Shops"
 	 * @return view page
 	 */
 	@RequestMapping(value = "/myPreferredShops", method = RequestMethod.GET)
